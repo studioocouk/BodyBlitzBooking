@@ -1,0 +1,19 @@
+name = "studioo-booking-worker"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "studioo-db"
+database_id = "YOUR_D1_DATABASE_ID"
+
+[vars]
+STRIPE_PUBLISHABLE_KEY = "pk_live_YOUR_KEY"
+WIDGET_ORIGIN = "https://studioo.co.uk"
+ADMIN_ORIGIN = "https://admin.studioo.co.uk"
+
+# Secrets — set via: wrangler secret put SECRET_NAME
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# RESEND_API_KEY
+# ADMIN_PASSWORD

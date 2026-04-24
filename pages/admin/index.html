@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studioo — Admin</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041;
+    --text: #1a1a1a; --muted: #6b7280; --border: #e5e7eb;
+    --bg: #f9fafb; --card: #fff; --danger: #dc2626; --danger-bg: #FEF2F2;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); min-height: 100vh; }
+  /* Login */
+  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .login-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; width: 320px; }
+  .login-card h1 { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+  /* Nav */
+  nav { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 0; height: 52px; }
+  .nav-brand { font-size: 15px; font-weight: 700; color: var(--teal); margin-right: 28px; }
+  .nav-tab { padding: 0 14px; height: 52px; display: flex; align-items: center; font-size: 14px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: color .15s; }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+  .nav-right { margin-left: auto; font-size: 13px; color: var(--muted); cursor: pointer; }
+  /* Layout */
+  main { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+  h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; }
+  /* Form elements */
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  input[type=text], input[type=email], input[type=number], input[type=password], textarea, select {
+    width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 14px; color: var(--text); background: var(--card); outline: none; transition: border-color .15s;
+    font-family: inherit;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--teal); }
+  textarea { resize: vertical; min-height: 80px; font-family: monospace; font-size: 12px; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .form-row { margin-bottom: 14px; }
+  /* Buttons */
+  .btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); transition: background .15s; }
+  .btn:hover { background: var(--bg); }
+  .btn-primary { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .btn-primary:hover { opacity: .88; background: var(--teal); }
+  .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: #FECACA; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg); }
+  /* Badge */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-paid { background: var(--teal-light); color: var(--teal-dark); }
+  .badge-pending { background: #FEF9C3; color: #854D0E; }
+  .badge-cancelled { background: #F3F4F6; color: var(--muted); }
+  /* Tiers editor */
+  .tier-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .tier-row input { width: 80px; }
+  /* Misc */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+  .stat-card .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .stat-card .value { font-size: 24px; font-weight: 600; }
+  .msg { padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 14px; }
+  .msg-ok { background: var(--teal-light); color: var(--teal-dark); }
+  .msg-err { background: var(--danger-bg); color: var(--danger); }
+  .spaces-input { width: 60px; padding: 4px 8px; font-size: 13px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const API = 'https://studioo-booking-worker.YOUR_SUBDOMAIN.workers.dev';
+let token = sessionStorage.getItem('studioo_token') || '';
+let activeTab = 'events';
+let data = { events: [], bookings: [], settings: null };
+let msg = null;
+
+// ── Auth ──────────────────────────────────────────────────────
+async function login() {
+  const pw = document.getElementById('pw').value;
+  const res = await fetch(`${API}/admin/settings`, { headers: { Authorization: `Bearer ${pw}` } });
+  if (res.ok) {
+    token = pw;
+    sessionStorage.setItem('studioo_token', token);
+    await loadAll();
+    render();
+  } else {
+    document.getElementById('login-err').textContent = 'Incorrect password';
+  }
+}
+
+function logout() {
+  token = '';
+  sessionStorage.removeItem('studioo_token');
+  render();
+}
+
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(`${API}${path}`, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.error || res.statusText); }
+  return res.json();
+}
+
+// ── Data loading ──────────────────────────────────────────────
+async function loadAll() {
+  const [ev, bk, st] = await Promise.all([
+    apiFetch('/admin/events'),
+    apiFetch('/admin/bookings'),
+    apiFetch('/admin/settings')
+  ]);
+  data.events = ev;
+  data.bookings = bk;
+  data.settings = st;
+}
+
+// ── Rendering ─────────────────────────────────────────────────
+function render() {
+  const app = document.getElementById('app');
+  if (!token) { app.innerHTML = renderLogin(); return; }
+  app.innerHTML = renderShell();
+  attachListeners();
+}
+
+function renderLogin() {
+  return `<div class="login-wrap">
+    <div class="login-card">
+      <h1>Studioo Admin</h1>
+      <div class="form-row"><label>Password</label><input type="password" id="pw" onkeydown="if(event.key==='Enter')login()"></div>
+      <p id="login-err" style="color:var(--danger);font-size:13px;margin-bottom:12px"></p>
+      <button class="btn btn-primary" style="width:100%" onclick="login()">Sign in</button>
+    </div>
+  </div>`;
+}
+
+function renderShell() {
+  return `
+    <nav>
+      <span class="nav-brand">Studioo</span>
+      <span class="nav-tab${activeTab==='events'?' active':''}" onclick="switchTab('events')">Events</span>
+      <span class="nav-tab${activeTab==='bookings'?' active':''}" onclick="switchTab('bookings')">Bookings</span>
+      <span class="nav-tab${activeTab==='settings'?' active':''}" onclick="switchTab('settings')">Settings</span>
+      <span class="nav-right" onclick="logout()">Sign out</span>
+    </nav>
+    <main>${renderTab()}</main>`;
+}
+
+function renderTab() {
+  const m = msg ? `<div class="msg ${msg.ok?'msg-ok':'msg-err'}">${msg.text}</div>` : '';
+  if (activeTab === 'events') return m + renderEvents();
+  if (activeTab === 'bookings') return m + renderBookings();
+  if (activeTab === 'settings') return m + renderSettings();
+  return '';
+}
+
+// ── Events tab ────────────────────────────────────────────────
+function renderEvents() {
+  const totalBooked = data.events.reduce((s,e) => s + e.spaces_sold, 0);
+  const totalSpaces = data.events.reduce((s,e) => s + e.capacity, 0);
+
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><div class="label">Events</div><div class="value">${data.events.length}</div></div>
+      <div class="stat-card"><div class="label">Total spaces sold</div><div class="value">${totalBooked}</div></div>
+      <div class="stat-card"><div class="label">Remaining spaces</div><div class="value">${totalSpaces - totalBooked}</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Add a single event</h2>
+      <div class="form-grid">
+        <div><label>Title</label><input type="text" id="ev-title" placeholder="Vinyasa flow"></div>
+        <div><label>Date</label><input type="date" id="ev-date"></div>
+        <div><label>Start time</label><input type="time" id="ev-start"></div>
+        <div><label>End time</label><input type="time" id="ev-end"></div>
+        <div><label>Duration (mins)</label><input type="number" id="ev-dur" placeholder="60"></div>
+        <div><label>Capacity</label><input type="number" id="ev-cap" placeholder="${data.settings?.default_capacity || 10}"></div>
+        <div><label>Meet link</label><input type="text" id="ev-link" placeholder="https://meet.google.com/..."></div>
+        <div><label>Blank 1</label><input type="text" id="ev-b1"></div>
+        <div><label>Blank 2</label><input type="text" id="ev-b2"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addEvent()">Add event</button>
+    </div>
+
+    <div class="card">
+      <h2>Import from Google Sheet</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">
+        Copy rows from your sheet (columns: Event Title, Date, Start Time, End Time, Duration, Blank1, Blank2, Meet Link) and paste below.
+        Dates must be YYYY-MM-DD, times HH:MM.
+      </p>
+      <div class="form-row"><textarea id="import-csv" placeholder="Vinyasa flow	2025-03-01	09:00	10:00	60		  https://meet.google.com/abc"></textarea></div>
+      <button class="btn btn-primary" onclick="importEvents()">Import rows</button>
+    </div>
+
+    <div class="card">
+      <h2>All events</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Title</th><th>Date</th><th>Time</th><th>Duration</th>
+            <th>Capacity</th><th>Sold</th><th>Available</th><th>Meet link</th><th></th>
+          </tr></thead>
+          <tbody>
+            ${data.events.map(ev => `<tr>
+              <td><strong>${ev.event_title}</strong></td>
+              <td>${ev.date}</td>
+              <td>${ev.start_time}–${ev.end_time}</td>
+              <td>${ev.duration_mins}m</td>
+              <td><input class="spaces-input" type="number" value="${ev.capacity}" min="${ev.spaces_sold}" onchange="updateCapacity(${ev.id},this.value)"></td>
+              <td>${ev.spaces_sold}</td>
+              <td>${ev.spaces_available}</td>
+              <td>${ev.meet_link ? `<a href="${ev.meet_link}" target="_blank" style="color:var(--teal);font-size:12px">Link</a>` : '—'}</td>
+              <td><button class="btn btn-sm btn-danger" onclick="deleteEvent(${ev.id})">Delete</button></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ── Bookings tab ──────────────────────────────────────────────
+function renderBookings() {
+  const paid = data.bookings.filter(b => b.status === 'paid');
+  const revenue = paid.reduce((s, b) => s + b.amount_paid_pence, 0);
+
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><div class="label">Total bookings</div><div class="value">${data.bookings.length}</div></div>
+      <div class="stat-card"><div class="label">Paid bookings</div><div class="value">${paid.length}</div></div>
+      <div class="stat-card"><div class="label">Revenue</div><div class="value">£${(revenue/100).toFixed(2)}</div></div>
+    </div>
+    <div class="card">
+      <h2>Bookings</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Name</th><th>Email</th><th>Classes</th><th>Amount</th><th>Waiver</th><th>Status</th><th>Date</th>
+          </tr></thead>
+          <tbody>
+            ${data.bookings.map(b => `<tr>
+              <td>${b.customer_name}</td>
+              <td style="color:var(--muted)">${b.customer_email}</td>
+              <td>${b.class_count}</td>
+              <td>£${(b.amount_paid_pence/100).toFixed(2)}</td>
+              <td style="text-align:center">${b.waiver_accepted ? '✓' : '✗'}</td>
+              <td><span class="badge badge-${b.status}">${b.status}</span></td>
+              <td style="color:var(--muted);font-size:12px">${b.created_at.slice(0,10)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ── Settings tab ──────────────────────────────────────────────
+function renderSettings() {
+  const s = data.settings;
+  const tiers = s?.discount_tiers || [];
+  return `
+    <div class="card">
+      <h2>Pricing</h2>
+      <div class="form-grid" style="max-width:400px">
+        <div><label>Base price per class (pence)</label><input type="number" id="s-base" value="${s?.base_price_pence}" step="50" min="100"><p style="font-size:11px;color:var(--muted);margin-top:4px">e.g. 1000 = £10.00</p></div>
+        <div><label>Default capacity per event</label><input type="number" id="s-cap" value="${s?.default_capacity}" min="1"></div>
+      </div>
+
+      <h3 style="font-size:15px;font-weight:500;margin-bottom:12px;margin-top:4px">Bundle discount tiers</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Discount applies when customer selects ≥ min classes.</p>
+      <div id="tiers-list">
+        ${tiers.map((t, i) => `<div class="tier-row" data-i="${i}">
+          <div><label>Min classes</label><input type="number" class="tier-min" value="${t.min}" min="2" step="1"></div>
+          <div><label>Discount %</label><input type="number" class="tier-pct" value="${t.pct}" min="1" max="99"></div>
+          <button class="btn btn-sm btn-danger" onclick="removeTier(${i})">Remove</button>
+        </div>`).join('')}
+      </div>
+      <button class="btn btn-sm" style="margin-top:8px;margin-bottom:16px" onclick="addTier()">+ Add tier</button>
+
+      <button class="btn btn-primary" onclick="saveSettings()">Save settings</button>
+    </div>`;
+}
+
+// ── Actions ───────────────────────────────────────────────────
+function switchTab(tab) { activeTab = tab; msg = null; render(); }
+
+async function addEvent() {
+  try {
+    const cap = document.getElementById('ev-cap').value;
+    await apiFetch('/admin/events', {
+      method: 'POST',
+      body: JSON.stringify({
+        event_title: document.getElementById('ev-title').value,
+        date: document.getElementById('ev-date').value,
+        start_time: document.getElementById('ev-start').value,
+        end_time: document.getElementById('ev-end').value,
+        duration_mins: parseInt(document.getElementById('ev-dur').value) || 60,
+        capacity: cap ? parseInt(cap) : undefined,
+        meet_link: document.getElementById('ev-link').value,
+        blank1: document.getElementById('ev-b1').value,
+        blank2: document.getElementById('ev-b2').value,
+      })
+    });
+    await loadAll(); msg = { ok: true, text: 'Event added.' }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
+}
+
+async function importEvents() {
+  try {
+    const raw = document.getElementById('import-csv').value.trim();
+    const rows = raw.split('\n').map(line => {
+      const cols = line.split('\t');
+      return {
+        event_title: cols[0]?.trim(),
+        date: cols[1]?.trim(),
+        start_time: cols[2]?.trim(),
+        end_time: cols[3]?.trim(),
+        duration_mins: cols[4]?.trim(),
+        blank1: cols[5]?.trim(),
+        blank2: cols[6]?.trim(),
+        meet_link: cols[7]?.trim()
+      };
+    }).filter(r => r.event_title && r.date);
+
+    const result = await apiFetch('/admin/events/import', { method: 'POST', body: JSON.stringify({ rows }) });
+    await loadAll(); msg = { ok: true, text: `Imported ${result.inserted} events.` }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
+}
+
+async function updateCapacity(id, val) {
+  try {
+    const ev = data.events.find(e => e.id === id);
+    await apiFetch(`/admin/events/${id}`, { method: 'PUT', body: JSON.stringify({ ...ev, capacity: parseInt(val) }) });
+    await loadAll();
+  } catch (e) { alert(e.message); }
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Delete this event? This cannot be undone.')) return;
+  try {
+    await apiFetch(`/admin/events/${id}`, { method: 'DELETE' });
+    await loadAll(); msg = { ok: true, text: 'Event deleted.' }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
+}
+
+function addTier() {
+  data.settings.discount_tiers.push({ min: 4, pct: 20 });
+  render();
+}
+
+function removeTier(i) {
+  data.settings.discount_tiers.splice(i, 1);
+  render();
+}
+
+async function saveSettings() {
+  try {
+    const tiers = [...document.querySelectorAll('.tier-row')].map(row => ({
+      min: parseInt(row.querySelector('.tier-min').value),
+      pct: parseInt(row.querySelector('.tier-pct').value)
+    }));
+    await apiFetch('/admin/settings', {
+      method: 'PUT',
+      body: JSON.stringify({
+        base_price_pence: parseInt(document.getElementById('s-base').value),
+        default_capacity: parseInt(document.getElementById('s-cap').value),
+        discount_tiers: tiers
+      })
+    });
+    await loadAll(); msg = { ok: true, text: 'Settings saved.' }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
+}
+
+function attachListeners() {}
+
+// Boot
+(async () => {
+  if (token) {
+    try { await loadAll(); } catch { token = ''; sessionStorage.removeItem('studioo_token'); }
+  }
+  render();
+})();
+</script>
+</body>
+</html>

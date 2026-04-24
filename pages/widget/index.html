@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a class — Studioo</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #1D9E75; --teal-light: #E1F5EE; --teal-dark: #085041; --teal-mid: #0F6E56;
+    --text: #1a1a1a; --muted: #6b7280; --border: #e5e7eb; --bg: #fff; --surface: #f9fafb;
+    --radius: 10px; --radius-sm: 6px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); padding: 0; }
+  .widget { max-width: 520px; margin: 0 auto; }
+  .widget-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .widget-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+  .widget-header h1 { font-size: 17px; font-weight: 600; }
+  .widget-header p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .progress-bar { display: flex; gap: 5px; padding: 12px 24px; border-bottom: 1px solid var(--border); }
+  .prog-seg { flex: 1; height: 3px; border-radius: 2px; background: var(--border); transition: background 0.2s; }
+  .prog-seg.active { background: var(--teal); }
+  .prog-seg.done { background: #9FE1CB; }
+  .body { padding: 20px 24px; }
+  .section-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+  /* Class cards */
+  .class-grid { display: flex; flex-direction: column; gap: 8px; }
+  .class-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: border-color .15s, background .15s; user-select: none; }
+  .class-card:hover { border-color: var(--teal); }
+  .class-card.selected { border-color: var(--teal); background: var(--teal-light); }
+  .class-card.full { opacity: .45; cursor: not-allowed; }
+  .class-name { font-size: 14px; font-weight: 500; }
+  .class-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .class-card.selected .class-meta { color: var(--teal-mid); }
+  .class-right { text-align: right; flex-shrink: 0; margin-left: 12px; }
+  .class-date { font-size: 12px; font-weight: 500; color: var(--text); }
+  .class-spaces { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .class-card.selected .class-spaces { color: var(--teal-mid); }
+  /* Pricing strip */
+  .price-strip { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .price-strip-left { font-size: 13px; color: var(--muted); }
+  .price-strip-left strong { color: var(--text); display: block; font-size: 15px; }
+  .discount-badge { background: #E1F5EE; color: var(--teal-dark); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+  .tier-hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .tier-hint span { color: var(--teal); font-weight: 500; }
+  /* Form */
+  .form-row { margin-bottom: 14px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+  input[type=text], input[type=email] { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; }
+  input[type=text]:focus, input[type=email]:focus { border-color: var(--teal); }
+  .waiver-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+  .waiver-row input[type=checkbox] { margin-top: 2px; accent-color: var(--teal); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+  .waiver-row label { font-size: 13px; color: var(--text); margin: 0; cursor: pointer; line-height: 1.4; }
+  .waiver-row a { color: var(--teal); text-decoration: none; }
+  /* Summary */
+  .summary-box { background: var(--surface); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px; border: 1px solid var(--border); }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .summary-row:last-child { margin-bottom: 0; }
+  .summary-total { font-size: 14px; font-weight: 600; color: var(--text); border-top: 1px solid var(--border); padding-top: 10px; margin-top: 6px; }
+  .summary-events { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+  .summary-event { font-size: 12px; color: var(--muted); padding: 3px 0; display: flex; justify-content: space-between; }
+  /* Buttons */
+  .btn-primary { width: 100%; padding: 11px; background: var(--teal); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
+  .btn-primary:hover:not(:disabled) { opacity: .88; }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-back { background: none; border: none; font-size: 13px; color: var(--muted); cursor: pointer; padding: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 4px; }
+  .btn-back:hover { color: var(--text); }
+  .stripe-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .stripe-badge { background: #635BFF; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: .02em; }
+  /* Success */
+  .success-wrap { padding: 32px 24px; text-align: center; }
+  .success-icon { width: 52px; height: 52px; background: var(--teal-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .success-wrap h2 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .success-wrap p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  /* Error */
+  .error-msg { background: #FEF2F2; border: 1px solid #FECACA; border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: #991B1B; margin-bottom: 14px; }
+  /* Loading */
+  .loading { text-align: center; padding: 32px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="widget">
+  <div class="widget-card" id="widget">
+    <div class="widget-header">
+      <h1 id="wh-title">Book a class</h1>
+      <p id="wh-sub">Select classes to get started</p>
+    </div>
+    <div class="progress-bar">
+      <div class="prog-seg" id="p1"></div>
+      <div class="prog-seg" id="p2"></div>
+      <div class="prog-seg" id="p3"></div>
+    </div>
+    <div class="body" id="step-body">
+      <div class="loading">Loading classes...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://studioo-booking-worker.YOUR_SUBDOMAIN.workers.dev';
+
+let state = {
+  step: 1,
+  events: [],
+  settings: null,
+  selected: [],   // array of event ids
+  name: '', email: '', waiver: false,
+  error: null, submitting: false
+};
+
+async function init() {
+  try {
+    const [evRes, stRes] = await Promise.all([
+      fetch(`${API}/events`),
+      fetch(`${API}/settings`)
+    ]);
+    state.events = await evRes.json();
+    state.settings = await stRes.json();
+    setStep(1);
+  } catch (e) {
+    document.getElementById('step-body').innerHTML = '<div class="error-msg">Could not load classes. Please refresh the page.</div>';
+  }
+}
+
+function calcPrice(count) {
+  if (!state.settings) return { pricePerClass: 0, total: 0, discountPct: 0 };
+  const base = state.settings.base_price_pence;
+  const tiers = [...state.settings.discount_tiers].sort((a, b) => b.min - a.min);
+  const tier = tiers.find(t => count >= t.min);
+  const discountPct = tier ? tier.pct : 0;
+  const pricePerClass = Math.round(base * (1 - discountPct / 100));
+  return { pricePerClass, total: pricePerClass * count, discountPct };
+}
+
+function nextTier() {
+  if (!state.settings) return null;
+  const tiers = [...state.settings.discount_tiers].sort((a, b) => a.min - b.min);
+  return tiers.find(t => state.selected.length < t.min) || null;
+}
+
+function fmt(pence) {
+  return '£' + (pence / 100).toFixed(2);
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00Z');
+  return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+
+function setStep(n) {
+  state.step = n;
+  ['p1','p2','p3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = 'prog-seg' + (i + 1 < n ? ' done' : i + 1 === n ? ' active' : '');
+  });
+  render();
+}
+
+function render() {
+  const body = document.getElementById('step-body');
+  const title = document.getElementById('wh-title');
+  const sub = document.getElementById('wh-sub');
+
+  if (state.step === 1) {
+    title.textContent = 'Choose your classes';
+    sub.textContent = 'Select one or more — bundle pricing applies automatically';
+
+    const { pricePerClass, total, discountPct } = calcPrice(state.selected.length);
+    const next = nextTier();
+
+    const classHTML = state.events.map(ev => {
+      const available = ev.spaces_available > 0;
+      const selected = state.selected.includes(ev.id);
+      return `<div class="class-card${selected ? ' selected' : ''}${!available ? ' full' : ''}"
+                   onclick="${available ? `toggleClass(${ev.id})` : ''}">
+        <div>
+          <div class="class-name">${ev.event_title}</div>
+          <div class="class-meta">${ev.duration_mins} min</div>
+        </div>
+        <div class="class-right">
+          <div class="class-date">${formatDate(ev.date)} &bull; ${ev.start_time}</div>
+          <div class="class-spaces">${!available ? 'Full' : ev.spaces_available === 1 ? '1 space left' : ev.spaces_available + ' spaces'}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    let priceHTML = '';
+    if (state.selected.length > 0) {
+      priceHTML = `<div class="price-strip">
+        <div class="price-strip-left">
+          <strong>${fmt(total)}</strong>
+          ${state.selected.length} class${state.selected.length > 1 ? 'es' : ''} &bull; ${fmt(pricePerClass)} each
+        </div>
+        ${discountPct > 0 ? `<div class="discount-badge">${discountPct}% off</div>` : ''}
+      </div>
+      ${next ? `<p class="tier-hint">Add <span>${next.min - state.selected.length} more</span> to unlock ${next.pct}% off per class</p>` : ''}`;
+    }
+
+    body.innerHTML = `
+      <p class="section-label">Available classes</p>
+      <div class="class-grid">${classHTML}</div>
+      ${priceHTML}
+      ${state.error ? `<div class="error-msg" style="margin-top:14px">${state.error}</div>` : ''}
+      <div style="margin-top:16px">
+        <button class="btn-primary" onclick="setStep(2)" ${state.selected.length === 0 ? 'disabled' : ''}>
+          Continue${state.selected.length > 0 ? ' — ' + fmt(total) : ''}
+        </button>
+      </div>`;
+  }
+
+  if (state.step === 2) {
+    const { pricePerClass, total, discountPct } = calcPrice(state.selected.length);
+    const selectedEvents = state.events.filter(e => state.selected.includes(e.id));
+
+    title.textContent = 'Your details';
+    sub.textContent = 'Almost there — one more step';
+
+    const summaryEvents = selectedEvents.map(ev =>
+      `<div class="summary-event"><span>${ev.event_title} &bull; ${formatDate(ev.date)} ${ev.start_time}</span><span>${fmt(pricePerClass)}</span></div>`
+    ).join('');
+
+    body.innerHTML = `
+      <button class="btn-back" onclick="setStep(1)">&#8592; Back</button>
+
+      <div class="summary-box">
+        <div class="summary-row summary-total">
+          <span>${state.selected.length} class${state.selected.length > 1 ? 'es' : ''}${discountPct > 0 ? ` (${discountPct}% bundle discount)` : ''}</span>
+          <span>${fmt(total)}</span>
+        </div>
+        <div class="summary-events">${summaryEvents}</div>
+      </div>
+
+      <div class="form-row">
+        <label for="inp-name">Full name</label>
+        <input type="text" id="inp-name" placeholder="Jane Smith" value="${state.name}" oninput="state.name=this.value;updateSubmit()">
+      </div>
+      <div class="form-row">
+        <label for="inp-email">Email address</label>
+        <input type="email" id="inp-email" placeholder="jane@example.com" value="${state.email}" oninput="state.email=this.value;updateSubmit()">
+      </div>
+
+      <div class="waiver-row">
+        <input type="checkbox" id="waiver" ${state.waiver ? 'checked' : ''} onchange="state.waiver=this.checked;updateSubmit()">
+        <label for="waiver">I confirm I have read and completed the <a href="https://studioo.co.uk/waiver" target="_blank">health &amp; liability waiver</a> before attending classes.</label>
+      </div>
+
+      ${state.error ? `<div class="error-msg">${state.error}</div>` : ''}
+
+      <button class="btn-primary" id="btn-pay" onclick="checkout()" ${canSubmit() ? '' : 'disabled'}>
+        ${state.submitting ? 'Redirecting to Stripe...' : `Pay ${fmt(total)} securely`}
+      </button>
+      <div class="stripe-note">
+        <span class="stripe-badge">stripe</span>
+        Secure payment &bull; cancel by email
+      </div>`;
+  }
+
+  if (state.step === 3) {
+    title.textContent = "You're booked!";
+    sub.textContent = 'Confirmation sent to ' + state.email;
+    body.innerHTML = `
+      <div class="success-wrap">
+        <div class="success-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12.5l5 5 9-9" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2>Booking confirmed</h2>
+        <p>Thanks, ${state.name}!<br>We've sent your class details and joining links to <strong>${state.email}</strong>.<br><br>To cancel, just reply to the confirmation email.</p>
+        <button class="btn-primary" style="margin-top:24px;max-width:200px;margin-left:auto;margin-right:auto" onclick="restart()">Book more classes</button>
+      </div>`;
+  }
+}
+
+function toggleClass(id) {
+  state.error = null;
+  const idx = state.selected.indexOf(id);
+  if (idx === -1) state.selected.push(id);
+  else state.selected.splice(idx, 1);
+  render();
+}
+
+function canSubmit() {
+  return state.name.trim() && state.email.trim() && state.waiver && !state.submitting;
+}
+
+function updateSubmit() {
+  const btn = document.getElementById('btn-pay');
+  if (btn) btn.disabled = !canSubmit();
+}
+
+async function checkout() {
+  if (!canSubmit()) return;
+  state.submitting = true;
+  state.error = null;
+  render();
+
+  try {
+    const res = await fetch(`${API}/bookings/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: state.name.trim(),
+        email: state.email.trim(),
+        waiver_accepted: true,
+        event_ids: state.selected
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    window.location.href = data.checkout_url;
+  } catch (err) {
+    state.error = err.message;
+    state.submitting = false;
+    render();
+  }
+}
+
+function restart() {
+  state.selected = [];
+  state.name = '';
+  state.email = '';
+  state.waiver = false;
+  state.error = null;
+  state.submitting = false;
+  setStep(1);
+}
+
+init();
+</script>
+</body>
+</html>
