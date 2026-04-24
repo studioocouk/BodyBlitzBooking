@@ -5,7 +5,7 @@ compatibility_date = "2024-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "studioo-db"
-database_id = "YOUR_D1_DATABASE_ID"
+database_id = "cf444a39-1351-46b1-9f85-5d5b3ad9bdff"
 
 [vars]
 STRIPE_PUBLISHABLE_KEY = "pk_live_YOUR_KEY"
