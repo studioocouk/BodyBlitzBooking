@@ -163,7 +163,7 @@ function render() {
 
   if (state.step === 1) {
     title.textContent = 'Choose your classes';
-    sub.textContent = 'Select one or more — bundle pricing applies automatically';
+    sub.textContent = 'Select 4 or more classes for a discount!!';
 
     const { pricePerClass, total, discountPct } = calcPrice(state.selected.length);
     const next = nextTier();
