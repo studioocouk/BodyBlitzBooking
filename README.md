@@ -1,4 +1,4 @@
-# Studioo Class Booking System
+# Studioo Class Booking System 
 
 ## Project structure
 
