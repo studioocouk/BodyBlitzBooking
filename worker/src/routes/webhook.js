@@ -6,8 +6,7 @@ export async function handleWebhook(request, env) {
 
   // Verify Stripe signature
   const valid = await verifyStripeSignature(body, sig, env.STRIPE_WEBHOOK_SECRET);
-// temporarily disabled for testing
-// if (!valid) return new Response('Invalid signature', { status: 400 });
+  if (!valid) return new Response('Invalid signature', { status: 400 });
 
   const event = JSON.parse(body);
 
