@@ -9,8 +9,8 @@ database_id = "cf444a39-1351-46b1-9f85-5d5b3ad9bdff"
 
 [vars]
 STRIPE_PUBLISHABLE_KEY = "pk_live_YOUR_KEY"
-WIDGET_ORIGIN = "https://bbwidget.pages.dev/"
-ADMIN_ORIGIN = "https://bbadmin-853.pages.dev/"
+WIDGET_ORIGIN = "https://bbwidget.pages.dev"
+ADMIN_ORIGIN = "https://bbadmin-853.pages.dev"
 
 # Secrets — set via: wrangler secret put SECRET_NAME
 # STRIPE_SECRET_KEY
