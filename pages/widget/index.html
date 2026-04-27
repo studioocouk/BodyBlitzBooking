@@ -241,7 +241,7 @@ function render() {
 
       <div class="waiver-row">
         <input type="checkbox" id="waiver" ${state.waiver ? 'checked' : ''} onchange="state.waiver=this.checked;updateSubmit()">
-        <label for="waiver">I confirm I have read and completed the <a href="https://studioo.co.uk/waiver" target="_blank">health &amp; liability waiver</a> before attending classes.</label>
+        <label for="waiver">I confirm I have read and completed the <a href="https://studioo.co.uk/parq" target="_blank">PARQ</a> before attending classes and I confirm to agree with <a href="https://studioo.co.uk/policies " target="_blank">studioo policies</a></label>
       </div>
 
       ${state.error ? `<div class="error-msg">${state.error}</div>` : ''}
