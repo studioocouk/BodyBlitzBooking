@@ -183,7 +183,7 @@ function renderEvents() {
         <table>
           <thead><tr>
             <th>Title</th><th>Date</th><th>Time</th><th>Dur</th>
-            <th>Cap</th><th>Sold</th><th>Avail</th><th>Status</th><th>Actions</th>
+            <th>Cap</th><th>Sold</th><th>Avail</th><th>Status</th><th>Meet link</th><th>Actions</th>
           </tr></thead>
           <tbody>
             ${data.events.map(ev => `<tr style="${ev.cancelled ? 'opacity:.5' : ''}">
@@ -195,6 +195,7 @@ function renderEvents() {
               <td>${ev.spaces_sold}</td>
               <td>${ev.spaces_available}</td>
               <td>${ev.cancelled ? '<span class="badge badge-cancelled">Cancelled</span>' : '<span class="badge badge-active">Active</span>'}</td>
+              <td>${ev.meet_link ? `<a href="${ev.meet_link}" target="_blank" style="color:var(--teal);font-size:12px">View</a><br><span style="font-size:11px;color:var(--muted);word-break:break-all;max-width:160px;display:inline-block">${ev.meet_link}</span>` : '—'}</td>
               <td>
                 <div class="btn-group">
                   ${!ev.cancelled ? `
