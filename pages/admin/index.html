@@ -13,56 +13,48 @@
     --radius: 10px; --radius-sm: 6px;
   }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); min-height: 100vh; }
-  /* Login */
   .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
   .login-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; width: 320px; }
   .login-card h1 { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-  /* Nav */
-  nav { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 0; height: 52px; }
+  nav { background: var(--card); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; height: 52px; }
   .nav-brand { font-size: 15px; font-weight: 700; color: var(--teal); margin-right: 28px; }
-  .nav-tab { padding: 0 14px; height: 52px; display: flex; align-items: center; font-size: 14px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; transition: color .15s; }
+  .nav-tab { padding: 0 14px; height: 52px; display: flex; align-items: center; font-size: 14px; cursor: pointer; color: var(--muted); border-bottom: 2px solid transparent; }
   .nav-tab:hover { color: var(--text); }
   .nav-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
   .nav-right { margin-left: auto; font-size: 13px; color: var(--muted); cursor: pointer; }
-  /* Layout */
-  main { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+  main { max-width: 1200px; margin: 0 auto; padding: 28px 24px; }
   h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
-  /* Cards */
   .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 20px; }
-  /* Form elements */
   label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  input[type=text], input[type=email], input[type=number], input[type=password], textarea, select {
+  input[type=text], input[type=email], input[type=number], input[type=password], input[type=date], input[type=time], textarea, select {
     width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 14px; color: var(--text); background: var(--card); outline: none; transition: border-color .15s;
-    font-family: inherit;
+    font-size: 14px; color: var(--text); background: var(--card); outline: none; transition: border-color .15s; font-family: inherit;
   }
   input:focus, textarea:focus, select:focus { border-color: var(--teal); }
   textarea { resize: vertical; min-height: 80px; font-family: monospace; font-size: 12px; }
   .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px; }
   .form-row { margin-bottom: 14px; }
-  /* Buttons */
-  .btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); transition: background .15s; }
+  .btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text); transition: all .15s; }
   .btn:hover { background: var(--bg); }
   .btn-primary { background: var(--teal); color: #fff; border-color: var(--teal); }
   .btn-primary:hover { opacity: .88; background: var(--teal); }
   .btn-danger { background: var(--danger-bg); color: var(--danger); border-color: #FECACA; }
+  .btn-ghost { background: transparent; color: var(--muted); border-color: var(--border); }
   .btn-sm { padding: 5px 10px; font-size: 12px; }
-  /* Table */
+  .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th { text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 8px 12px; border-bottom: 1px solid var(--border); }
   td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: var(--bg); }
-  /* Badge */
   .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
   .badge-paid { background: var(--teal-light); color: var(--teal-dark); }
   .badge-pending { background: #FEF9C3; color: #854D0E; }
   .badge-cancelled { background: #F3F4F6; color: var(--muted); }
-  /* Tiers editor */
+  .badge-active { background: var(--teal-light); color: var(--teal-dark); }
   .tier-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
   .tier-row input { width: 80px; }
-  /* Misc */
   .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
   .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
   .stat-card .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
@@ -71,11 +63,16 @@
   .msg-ok { background: var(--teal-light); color: var(--teal-dark); }
   .msg-err { background: var(--danger-bg); color: var(--danger); }
   .spaces-input { width: 60px; padding: 4px 8px; font-size: 13px; text-align: center; }
+  /* Modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .modal { background: var(--card); border-radius: var(--radius); padding: 28px; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; }
+  .modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
+  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
 </style>
 </head>
 <body>
-
 <div id="app"></div>
+<div id="modal-root"></div>
 
 <script>
 const API = 'https://studioo-booking-worker.studiooonurorkut.workers.dev';
@@ -89,40 +86,23 @@ async function login() {
   const pw = document.getElementById('pw').value;
   const res = await fetch(`${API}/admin/settings`, { headers: { Authorization: `Bearer ${pw}` } });
   if (res.ok) {
-    token = pw;
-    sessionStorage.setItem('studioo_token', token);
-    await loadAll();
-    render();
-  } else {
-    document.getElementById('login-err').textContent = 'Incorrect password';
-  }
+    token = pw; sessionStorage.setItem('studioo_token', token);
+    await loadAll(); render();
+  } else { document.getElementById('login-err').textContent = 'Incorrect password'; }
 }
-
-function logout() {
-  token = '';
-  sessionStorage.removeItem('studioo_token');
-  render();
-}
+function logout() { token = ''; sessionStorage.removeItem('studioo_token'); render(); }
 
 async function apiFetch(path, opts = {}) {
   const res = await fetch(`${API}${path}`, {
-    ...opts,
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
+    ...opts, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...(opts.headers || {}) }
   });
   if (!res.ok) { const e = await res.json(); throw new Error(e.error || res.statusText); }
   return res.json();
 }
 
-// ── Data loading ──────────────────────────────────────────────
 async function loadAll() {
-  const [ev, bk, st] = await Promise.all([
-    apiFetch('/admin/events'),
-    apiFetch('/admin/bookings'),
-    apiFetch('/admin/settings')
-  ]);
-  data.events = ev;
-  data.bookings = bk;
-  data.settings = st;
+  const [ev, bk, st] = await Promise.all([apiFetch('/admin/events'), apiFetch('/admin/bookings'), apiFetch('/admin/settings')]);
+  data.events = ev; data.bookings = bk; data.settings = st;
 }
 
 // ── Rendering ─────────────────────────────────────────────────
@@ -130,30 +110,26 @@ function render() {
   const app = document.getElementById('app');
   if (!token) { app.innerHTML = renderLogin(); return; }
   app.innerHTML = renderShell();
-  attachListeners();
 }
 
 function renderLogin() {
-  return `<div class="login-wrap">
-    <div class="login-card">
-      <h1>Studioo Admin</h1>
-      <div class="form-row"><label>Password</label><input type="password" id="pw" onkeydown="if(event.key==='Enter')login()"></div>
-      <p id="login-err" style="color:var(--danger);font-size:13px;margin-bottom:12px"></p>
-      <button class="btn btn-primary" style="width:100%" onclick="login()">Sign in</button>
-    </div>
-  </div>`;
+  return `<div class="login-wrap"><div class="login-card">
+    <h1>Studioo Admin</h1>
+    <div class="form-row"><label>Password</label><input type="password" id="pw" onkeydown="if(event.key==='Enter')login()"></div>
+    <p id="login-err" style="color:var(--danger);font-size:13px;margin-bottom:12px"></p>
+    <button class="btn btn-primary" style="width:100%" onclick="login()">Sign in</button>
+  </div></div>`;
 }
 
 function renderShell() {
-  return `
-    <nav>
-      <span class="nav-brand">Studioo</span>
-      <span class="nav-tab${activeTab==='events'?' active':''}" onclick="switchTab('events')">Events</span>
-      <span class="nav-tab${activeTab==='bookings'?' active':''}" onclick="switchTab('bookings')">Bookings</span>
-      <span class="nav-tab${activeTab==='settings'?' active':''}" onclick="switchTab('settings')">Settings</span>
-      <span class="nav-right" onclick="logout()">Sign out</span>
-    </nav>
-    <main>${renderTab()}</main>`;
+  return `<nav>
+    <span class="nav-brand">Studioo</span>
+    <span class="nav-tab${activeTab==='events'?' active':''}" onclick="switchTab('events')">Events</span>
+    <span class="nav-tab${activeTab==='bookings'?' active':''}" onclick="switchTab('bookings')">Bookings</span>
+    <span class="nav-tab${activeTab==='settings'?' active':''}" onclick="switchTab('settings')">Settings</span>
+    <span class="nav-right" onclick="logout()">Sign out</span>
+  </nav>
+  <main>${renderTab()}</main>`;
 }
 
 function renderTab() {
@@ -164,6 +140,8 @@ function renderTab() {
   return '';
 }
 
+function switchTab(tab) { activeTab = tab; msg = null; render(); }
+
 // ── Events tab ────────────────────────────────────────────────
 function renderEvents() {
   const totalBooked = data.events.reduce((s,e) => s + e.spaces_sold, 0);
@@ -172,8 +150,8 @@ function renderEvents() {
   return `
     <div class="stat-grid">
       <div class="stat-card"><div class="label">Events</div><div class="value">${data.events.length}</div></div>
-      <div class="stat-card"><div class="label">Total spaces sold</div><div class="value">${totalBooked}</div></div>
-      <div class="stat-card"><div class="label">Remaining spaces</div><div class="value">${totalSpaces - totalBooked}</div></div>
+      <div class="stat-card"><div class="label">Spaces sold</div><div class="value">${totalBooked}</div></div>
+      <div class="stat-card"><div class="label">Remaining</div><div class="value">${totalSpaces - totalBooked}</div></div>
     </div>
 
     <div class="card">
@@ -194,11 +172,8 @@ function renderEvents() {
 
     <div class="card">
       <h2>Import from Google Sheet</h2>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">
-        Copy rows from your sheet (columns: Event Title, Date, Start Time, End Time, Duration, Blank1, Blank2, Meet Link) and paste below.
-        Dates must be YYYY-MM-DD, times HH:MM.
-      </p>
-      <div class="form-row"><textarea id="import-csv" placeholder="Vinyasa flow	2025-03-01	09:00	10:00	60		  https://meet.google.com/abc"></textarea></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Copy rows from your sheet (Event Title, Date YYYY-MM-DD, Start HH:MM, End HH:MM, Duration, Blank1, Blank2, Meet Link) and paste below.</p>
+      <div class="form-row"><textarea id="import-csv" placeholder="Vinyasa flow&#9;2025-03-01&#9;09:00&#9;10:00&#9;60&#9;&#9;&#9;https://meet.google.com/abc"></textarea></div>
       <button class="btn btn-primary" onclick="importEvents()">Import rows</button>
     </div>
 
@@ -207,20 +182,29 @@ function renderEvents() {
       <div class="table-wrap">
         <table>
           <thead><tr>
-            <th>Title</th><th>Date</th><th>Time</th><th>Duration</th>
-            <th>Capacity</th><th>Sold</th><th>Available</th><th>Meet link</th><th></th>
+            <th>Title</th><th>Date</th><th>Time</th><th>Dur</th>
+            <th>Cap</th><th>Sold</th><th>Avail</th><th>Status</th><th>Actions</th>
           </tr></thead>
           <tbody>
-            ${data.events.map(ev => `<tr>
+            ${data.events.map(ev => `<tr style="${ev.cancelled ? 'opacity:.5' : ''}">
               <td><strong>${ev.event_title}</strong></td>
-              <td>${ev.date}</td>
-              <td>${ev.start_time}–${ev.end_time}</td>
+              <td style="white-space:nowrap">${ev.date}</td>
+              <td style="white-space:nowrap">${ev.start_time}–${ev.end_time}</td>
               <td>${ev.duration_mins}m</td>
-              <td><input class="spaces-input" type="number" value="${ev.capacity}" min="${ev.spaces_sold}" onchange="updateCapacity(${ev.id},this.value)"></td>
+              <td><input class="spaces-input" type="number" value="${ev.capacity}" min="${ev.spaces_sold}" ${ev.cancelled ? 'disabled' : ''} onchange="updateCapacity(${ev.id},this.value)"></td>
               <td>${ev.spaces_sold}</td>
               <td>${ev.spaces_available}</td>
-              <td>${ev.meet_link ? `<a href="${ev.meet_link}" target="_blank" style="color:var(--teal);font-size:12px">Link</a>` : '—'}</td>
-              <td><button class="btn btn-sm btn-danger" onclick="deleteEvent(${ev.id})">Delete</button></td>
+              <td>${ev.cancelled ? '<span class="badge badge-cancelled">Cancelled</span>' : '<span class="badge badge-active">Active</span>'}</td>
+              <td>
+                <div class="btn-group">
+                  ${!ev.cancelled ? `
+                    <button class="btn btn-sm" onclick="openEditModal(${ev.id})">Edit</button>
+                    <button class="btn btn-sm" onclick="sendReminder(${ev.id},'${ev.event_title.replace(/'/g,"\\'")}')">Remind</button>
+                    <button class="btn btn-sm btn-danger" onclick="cancelEvent(${ev.id},'${ev.event_title.replace(/'/g,"\\'")}')">Cancel</button>
+                  ` : ''}
+                  <button class="btn btn-sm btn-ghost" onclick="deleteEvent(${ev.id})">Delete</button>
+                </div>
+              </td>
             </tr>`).join('')}
           </tbody>
         </table>
@@ -236,7 +220,7 @@ function renderBookings() {
   return `
     <div class="stat-grid">
       <div class="stat-card"><div class="label">Total bookings</div><div class="value">${data.bookings.length}</div></div>
-      <div class="stat-card"><div class="label">Paid bookings</div><div class="value">${paid.length}</div></div>
+      <div class="stat-card"><div class="label">Paid</div><div class="value">${paid.length}</div></div>
       <div class="stat-card"><div class="label">Revenue</div><div class="value">£${(revenue/100).toFixed(2)}</div></div>
     </div>
     <div class="card">
@@ -244,7 +228,7 @@ function renderBookings() {
       <div class="table-wrap">
         <table>
           <thead><tr>
-            <th>Name</th><th>Email</th><th>Classes</th><th>Amount</th><th>Waiver</th><th>Status</th><th>Date</th>
+            <th>Name</th><th>Email</th><th>Classes</th><th>Amount</th><th>Waiver</th><th>Status</th><th>Date</th><th>Actions</th>
           </tr></thead>
           <tbody>
             ${data.bookings.map(b => `<tr>
@@ -254,7 +238,10 @@ function renderBookings() {
               <td>£${(b.amount_paid_pence/100).toFixed(2)}</td>
               <td style="text-align:center">${b.waiver_accepted ? '✓' : '✗'}</td>
               <td><span class="badge badge-${b.status}">${b.status}</span></td>
-              <td style="color:var(--muted);font-size:12px">${b.created_at.slice(0,10)}</td>
+              <td style="color:var(--muted);font-size:12px;white-space:nowrap">${b.created_at.slice(0,10)}</td>
+              <td>
+                ${b.status === 'paid' ? `<button class="btn btn-sm btn-danger" onclick="cancelBooking(${b.id},'${b.customer_name.replace(/'/g,"\\'")}')">Cancel</button>` : ''}
+              </td>
             </tr>`).join('')}
           </tbody>
         </table>
@@ -273,65 +260,117 @@ function renderSettings() {
         <div><label>Base price per class (pence)</label><input type="number" id="s-base" value="${s?.base_price_pence}" step="50" min="100"><p style="font-size:11px;color:var(--muted);margin-top:4px">e.g. 1000 = £10.00</p></div>
         <div><label>Default capacity per event</label><input type="number" id="s-cap" value="${s?.default_capacity}" min="1"></div>
       </div>
-
-      <h3 style="font-size:15px;font-weight:500;margin-bottom:12px;margin-top:4px">Bundle discount tiers</h3>
+      <h3 style="font-size:15px;font-weight:500;margin-bottom:12px">Bundle discount tiers</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:12px">Discount applies when customer selects ≥ min classes.</p>
       <div id="tiers-list">
         ${tiers.map((t, i) => `<div class="tier-row" data-i="${i}">
-          <div><label>Min classes</label><input type="number" class="tier-min" value="${t.min}" min="2" step="1"></div>
+          <div><label>Min classes</label><input type="number" class="tier-min" value="${t.min}" min="2"></div>
           <div><label>Discount %</label><input type="number" class="tier-pct" value="${t.pct}" min="1" max="99"></div>
           <button class="btn btn-sm btn-danger" onclick="removeTier(${i})">Remove</button>
         </div>`).join('')}
       </div>
       <button class="btn btn-sm" style="margin-top:8px;margin-bottom:16px" onclick="addTier()">+ Add tier</button>
-
       <button class="btn btn-primary" onclick="saveSettings()">Save settings</button>
     </div>`;
 }
 
-// ── Actions ───────────────────────────────────────────────────
-function switchTab(tab) { activeTab = tab; msg = null; render(); }
+// ── Edit event modal ──────────────────────────────────────────
+function openEditModal(id) {
+  const ev = data.events.find(e => e.id === id);
+  if (!ev) return;
+  document.getElementById('modal-root').innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <h3>Edit event</h3>
+        <div class="form-grid">
+          <div><label>Title</label><input type="text" id="edit-title" value="${ev.event_title}"></div>
+          <div><label>Date</label><input type="date" id="edit-date" value="${ev.date}"></div>
+          <div><label>Start time</label><input type="time" id="edit-start" value="${ev.start_time}"></div>
+          <div><label>End time</label><input type="time" id="edit-end" value="${ev.end_time}"></div>
+          <div><label>Duration (mins)</label><input type="number" id="edit-dur" value="${ev.duration_mins}"></div>
+          <div><label>Capacity</label><input type="number" id="edit-cap" value="${ev.capacity}" min="${ev.spaces_sold}"></div>
+          <div style="grid-column:1/-1"><label>Meet link</label><input type="text" id="edit-link" value="${ev.meet_link}"></div>
+          <div><label>Blank 1</label><input type="text" id="edit-b1" value="${ev.blank1||''}"></div>
+          <div><label>Blank 2</label><input type="text" id="edit-b2" value="${ev.blank2||''}"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveEvent(${id})">Save</button>
+          <button class="btn btn-primary" style="background:#0F6E56;border-color:#0F6E56" onclick="saveEventAndNotify(${id})">Save &amp; Notify participants</button>
+        </div>
+      </div>
+    </div>`;
+}
 
-async function addEvent() {
+function closeModal() {
+  document.getElementById('modal-root').innerHTML = '';
+}
+
+function getEditFields() {
+  return {
+    event_title: document.getElementById('edit-title').value,
+    date: document.getElementById('edit-date').value,
+    start_time: document.getElementById('edit-start').value,
+    end_time: document.getElementById('edit-end').value,
+    duration_mins: parseInt(document.getElementById('edit-dur').value) || 60,
+    capacity: parseInt(document.getElementById('edit-cap').value),
+    meet_link: document.getElementById('edit-link').value,
+    blank1: document.getElementById('edit-b1').value,
+    blank2: document.getElementById('edit-b2').value,
+  };
+}
+
+async function saveEvent(id) {
   try {
-    const cap = document.getElementById('ev-cap').value;
-    await apiFetch('/admin/events', {
-      method: 'POST',
-      body: JSON.stringify({
-        event_title: document.getElementById('ev-title').value,
-        date: document.getElementById('ev-date').value,
-        start_time: document.getElementById('ev-start').value,
-        end_time: document.getElementById('ev-end').value,
-        duration_mins: parseInt(document.getElementById('ev-dur').value) || 60,
-        capacity: cap ? parseInt(cap) : undefined,
-        meet_link: document.getElementById('ev-link').value,
-        blank1: document.getElementById('ev-b1').value,
-        blank2: document.getElementById('ev-b2').value,
-      })
-    });
-    await loadAll(); msg = { ok: true, text: 'Event added.' }; render();
+    await apiFetch(`/admin/events/${id}`, { method: 'PUT', body: JSON.stringify(getEditFields()) });
+    closeModal();
+    await loadAll(); msg = { ok: true, text: 'Event updated.' }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; closeModal(); render(); }
+}
+
+async function saveEventAndNotify(id) {
+  try {
+    await apiFetch(`/admin/events/${id}`, { method: 'PUT', body: JSON.stringify(getEditFields()) });
+    const result = await apiFetch(`/admin/events/${id}/notify`, { method: 'POST' });
+    closeModal();
+    await loadAll();
+    msg = { ok: true, text: `Event updated. ${result.notified} participant${result.notified !== 1 ? 's' : ''} notified.` };
+    render();
+  } catch (e) { msg = { ok: false, text: e.message }; closeModal(); render(); }
+}
+
+// ── Event actions ─────────────────────────────────────────────
+async function cancelEvent(id, title) {
+  if (!confirm(`Cancel "${title}"?\n\nThis will mark the event cancelled and email all booked participants. This cannot be undone.`)) return;
+  try {
+    const result = await apiFetch(`/admin/events/${id}/cancel`, { method: 'POST' });
+    await loadAll();
+    msg = { ok: true, text: `"${title}" cancelled. ${result.participants_notified} participant(s) notified.` };
+    render();
   } catch (e) { msg = { ok: false, text: e.message }; render(); }
 }
 
-async function importEvents() {
+async function sendReminder(id, title) {
+  if (!confirm(`Send reminder emails for "${title}" now?`)) return;
   try {
-    const raw = document.getElementById('import-csv').value.trim();
-    const rows = raw.split('\n').map(line => {
-      const cols = line.split('\t');
-      return {
-        event_title: cols[0]?.trim(),
-        date: cols[1]?.trim(),
-        start_time: cols[2]?.trim(),
-        end_time: cols[3]?.trim(),
-        duration_mins: cols[4]?.trim(),
-        blank1: cols[5]?.trim(),
-        blank2: cols[6]?.trim(),
-        meet_link: cols[7]?.trim()
-      };
-    }).filter(r => r.event_title && r.date);
+    const result = await apiFetch(`/admin/events/${id}/remind`, { method: 'POST' });
+    msg = { ok: true, text: `Reminders sent to ${result.reminders_sent} participant(s).` };
+    render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
+}
 
-    const result = await apiFetch('/admin/events/import', { method: 'POST', body: JSON.stringify({ rows }) });
-    await loadAll(); msg = { ok: true, text: `Imported ${result.inserted} events.` }; render();
+async function deleteEvent(id) {
+  const ev = data.events.find(e => e.id === id);
+  const hasPaid = ev && ev.spaces_sold > 0;
+  const confirmMsg = hasPaid
+    ? `Delete this event?\n\n${ev.spaces_sold} paid participant(s) will receive a cancellation email. This cannot be undone.`
+    : 'Delete this event? This cannot be undone.';
+  if (!confirm(confirmMsg)) return;
+  try {
+    const result = await apiFetch(`/admin/events/${id}`, { method: 'DELETE' });
+    await loadAll();
+    msg = { ok: true, text: `Event deleted.${result.participants_notified > 0 ? ` ${result.participants_notified} participant(s) notified.` : ''}` };
+    render();
   } catch (e) { msg = { ok: false, text: e.message }; render(); }
 }
 
@@ -343,23 +382,50 @@ async function updateCapacity(id, val) {
   } catch (e) { alert(e.message); }
 }
 
-async function deleteEvent(id) {
-  if (!confirm('Delete this event? This cannot be undone.')) return;
+async function addEvent() {
   try {
-    await apiFetch(`/admin/events/${id}`, { method: 'DELETE' });
-    await loadAll(); msg = { ok: true, text: 'Event deleted.' }; render();
+    const cap = document.getElementById('ev-cap').value;
+    await apiFetch('/admin/events', { method: 'POST', body: JSON.stringify({
+      event_title: document.getElementById('ev-title').value,
+      date: document.getElementById('ev-date').value,
+      start_time: document.getElementById('ev-start').value,
+      end_time: document.getElementById('ev-end').value,
+      duration_mins: parseInt(document.getElementById('ev-dur').value) || 60,
+      capacity: cap ? parseInt(cap) : undefined,
+      meet_link: document.getElementById('ev-link').value,
+      blank1: document.getElementById('ev-b1').value,
+      blank2: document.getElementById('ev-b2').value,
+    })});
+    await loadAll(); msg = { ok: true, text: 'Event added.' }; render();
   } catch (e) { msg = { ok: false, text: e.message }; render(); }
 }
 
-function addTier() {
-  data.settings.discount_tiers.push({ min: 4, pct: 20 });
-  render();
+async function importEvents() {
+  try {
+    const raw = document.getElementById('import-csv').value.trim();
+    const rows = raw.split('\n').map(line => {
+      const cols = line.split('\t');
+      return { event_title: cols[0]?.trim(), date: cols[1]?.trim(), start_time: cols[2]?.trim(),
+               end_time: cols[3]?.trim(), duration_mins: cols[4]?.trim(), blank1: cols[5]?.trim(),
+               blank2: cols[6]?.trim(), meet_link: cols[7]?.trim() };
+    }).filter(r => r.event_title && r.date);
+    const result = await apiFetch('/admin/events/import', { method: 'POST', body: JSON.stringify({ rows }) });
+    await loadAll(); msg = { ok: true, text: `Imported ${result.inserted} events.` }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
 }
 
-function removeTier(i) {
-  data.settings.discount_tiers.splice(i, 1);
-  render();
+// ── Booking actions ───────────────────────────────────────────
+async function cancelBooking(id, name) {
+  if (!confirm(`Cancel booking for ${name}?\n\nThis will:\n• Mark their booking as cancelled\n• Email them a cancellation notice\n• Free up their spaces\n\nYou will need to issue a refund manually in Stripe.`)) return;
+  try {
+    await apiFetch(`/admin/bookings/${id}/cancel`, { method: 'POST' });
+    await loadAll(); msg = { ok: true, text: `Booking for ${name} cancelled. Cancellation email sent.` }; render();
+  } catch (e) { msg = { ok: false, text: e.message }; render(); }
 }
+
+// ── Settings ──────────────────────────────────────────────────
+function addTier() { data.settings.discount_tiers.push({ min: 4, pct: 20 }); render(); }
+function removeTier(i) { data.settings.discount_tiers.splice(i, 1); render(); }
 
 async function saveSettings() {
   try {
@@ -367,25 +433,18 @@ async function saveSettings() {
       min: parseInt(row.querySelector('.tier-min').value),
       pct: parseInt(row.querySelector('.tier-pct').value)
     }));
-    await apiFetch('/admin/settings', {
-      method: 'PUT',
-      body: JSON.stringify({
-        base_price_pence: parseInt(document.getElementById('s-base').value),
-        default_capacity: parseInt(document.getElementById('s-cap').value),
-        discount_tiers: tiers
-      })
-    });
+    await apiFetch('/admin/settings', { method: 'PUT', body: JSON.stringify({
+      base_price_pence: parseInt(document.getElementById('s-base').value),
+      default_capacity: parseInt(document.getElementById('s-cap').value),
+      discount_tiers: tiers
+    })});
     await loadAll(); msg = { ok: true, text: 'Settings saved.' }; render();
   } catch (e) { msg = { ok: false, text: e.message }; render(); }
 }
 
-function attachListeners() {}
-
 // Boot
 (async () => {
-  if (token) {
-    try { await loadAll(); } catch { token = ''; sessionStorage.removeItem('studioo_token'); }
-  }
+  if (token) { try { await loadAll(); } catch { token = ''; sessionStorage.removeItem('studioo_token'); } }
   render();
 })();
 </script>
